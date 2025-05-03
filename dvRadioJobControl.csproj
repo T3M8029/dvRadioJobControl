@@ -1,49 +1,118 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+	  <TargetFramework>net481</TargetFramework>
     <AssemblyName>dvRadioJobControlMod</AssemblyName>
-    <Description>Disable Steam or Diesel for more immersion!</Description>
     <Version>0.2.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RootNamespace>dvRadioJobControl</RootNamespace>
-    <ReferencePath>E:\Steam\steamapps\common\Derail Valley\DerailValley_Data\Managed</ReferencePath>
   </PropertyGroup>
   
   <PropertyGroup>
     <AssemblySearchPaths>
        $(AssemblySearchPaths);
        $(ReferencePath);
+	   $(DVInstallPath)
     </AssemblySearchPaths>
   </PropertyGroup>
   
   <PropertyGroup>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <Reference Include="Assembly-CSharp" />
-	<Reference Include="CommandTerminal" />
-    <Reference Include="DV.Simulation" />
-    <Reference Include="DV.ThingTypes" />
-    <Reference Include="DV.UI" />
-    <Reference Include="DV.Utils" />
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>E:\Steam\SteamApps\common\Derail Valley\DerailValley_Data\Managed\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI" />
-    <Reference Include="UnityEngine.IMGUIModule" />
-    <Reference Include="UnityEngine" />
-    <Reference Include="UnityEngine.CoreModule" />
-    <Reference Include="UnityEngine.AudioModule" />
-    <Reference Include="UnityEngine.PhysicsModule" />
-    <Reference Include="PersistentJobsMod">
-		<HintPath>$(ReferencePath)\..\..\Mods\PersistentJobs\PersistentJobsMod.dll</HintPath>
-    </Reference>
-
-    <PackageReference Include="UnityModManager" Version="0.27.2" />
+    <None Remove="Directory.Build.Props" />
+    <None Remove="LICENSE" />
+    <None Remove="readme.md" />
+    <None Remove="repository.json" />
   </ItemGroup>
+
+  
+  <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="2.3.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.Common">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.Interaction">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.Inventory">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.Scenarios.CRUD">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.Simulation">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.ThingTypes">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.UI">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.UIFramework">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.UserManagement">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DV.Utils">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.TextMeshPro">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityModManager">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+	  <Private>False</Private>
+	</Reference>
+	<Reference Include="UnityEngine.AudioModule">
+	  <Private>False</Private>
+    </Reference>
+	<Reference Include="CommandTerminal">
+	  <Private>False</Private>
+    </Reference>
+	<Reference Include="PersistentJobsMod">
+	  <Private>False</Private>
+    </Reference>
+  </ItemGroup> 
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <!-- Copy to build folder -->

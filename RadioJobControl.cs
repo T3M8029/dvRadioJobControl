@@ -137,7 +137,7 @@ namespace dvRadioJobControl
                     if (PointedCar != null) {
                         CommsRadioController.PlayAudioFromRadio(selectedCarSound, transform);
                         SetState(State.SelectCar);
-                        Job jobOfCar = SingletonBehaviour<JobsManager>.Instance.GetJobOfCar(PointedCar);
+                        Job jobOfCar = SingletonBehaviour<JobsManager>.Instance.GetJobOfCar(PointedCar.logicCar);
                         if (jobOfCar == null) {
                             selectedAction = PersistentJobsInstalled ? Act.reassign : Act.exit;
                         } else {
@@ -148,7 +148,7 @@ namespace dvRadioJobControl
                     break;
                 case State.SelectCar:
                     if (PointedCar != null) {
-                        Job jobOfCar = SingletonBehaviour<JobsManager>.Instance.GetJobOfCar(PointedCar);
+                        Job jobOfCar = SingletonBehaviour<JobsManager>.Instance.GetJobOfCar(PointedCar.logicCar);
                         
                         switch (selectedAction) {
                             case Act.accept:
@@ -229,7 +229,7 @@ namespace dvRadioJobControl
             string displayText = "manage jobs remotely";
             if (PointedCar != null) {
                 displayText = "Car: " + PointedCar.ID.ToString();
-                Job jobOfCar = SingletonBehaviour<JobsManager>.Instance.GetJobOfCar(PointedCar);
+                Job jobOfCar = SingletonBehaviour<JobsManager>.Instance.GetJobOfCar(PointedCar.logicCar);
                 if (jobOfCar != null) {
                     displayText += "\nJob: " + jobOfCar.ID.ToString()
                         + "\nState: " + jobOfCar.State.ToString();
@@ -251,7 +251,7 @@ namespace dvRadioJobControl
         }
 
         private bool IsValidAction(Act action) {
-            bool hasJob = PointedCar != null && SingletonBehaviour<JobsManager>.Instance.GetJobOfCar(PointedCar) != null;
+            bool hasJob = PointedCar != null && SingletonBehaviour<JobsManager>.Instance.GetJobOfCar(PointedCar.logicCar) != null;
             switch (action) {
                 case Act.reassign:
                     return !hasJob && PersistentJobsInstalled;

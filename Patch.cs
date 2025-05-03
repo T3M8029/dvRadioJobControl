@@ -75,4 +75,15 @@ namespace dvRadioJobControl
             ___allModes.Add(jobControl);
         }
     }
+
+    //set booklet distance slightly smaller than job distance to ensure the booklets exist no matter where in the station the player is, so the mod can accept a job
+    [HarmonyPatch(typeof(StationJobGenerationRange), "Awake")]
+    public static class StationJobGenerationRange_Awake_Patch
+    {
+        static void Postfix(StationJobGenerationRange __instance)
+        {
+            __instance.jobOverviewBookletGenerationSqrDistance = 249000f; 
+        }
+    }
+
 }
