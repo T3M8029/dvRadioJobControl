@@ -2,11 +2,13 @@
 using DV;
 using DV.Booklets;
 using DV.Logic.Job;
+using DV.ServicePenalty;
 using DV.ThingTypes;
 using DV.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity.Jobs;
 using UnityEngine;
 using UnityModManagerNet;
 
@@ -152,7 +154,7 @@ namespace dvRadioJobControl
                         
                         switch (selectedAction) {
                             case Act.accept:
-                                if (jobOfCar != null && jobOfCar.State == JobState.Available) {
+                                if (IsValidJob(jobOfCar)) {
                                     CommsRadioController.PlayAudioFromRadio(confirmSound, transform);
                                     //SingletonBehaviour<JobsManager>.Instance.TakeJob(jobOfCar, true);
 
@@ -162,6 +164,7 @@ namespace dvRadioJobControl
 
                                     List<JobOverview> spawnedJobOverviews = (List<JobOverview>)typeof(StationController).GetField("spawnedJobOverviews", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(startingStation);
                                     JobOverview jobOverview = spawnedJobOverviews.Find(jo => jo.job == jobOfCar);
+                                    if (PersistentJobsInstalled) PersistentJobsMod.HarmonyPatches.JobValidators.JobValidator_ProcessJobOverview_Patch.ReserveSpacePJ(jobOfCar, out bool shuntingJobOnWarehouseTrack);
                                     startingStation.TakeJobFromStation(jobOverview);
 
                                     BookletCreator.CreateJobBooklet(jobOfCar, valueTuple.Item1, valueTuple.Item2, (Transform)null);
@@ -262,6 +265,18 @@ namespace dvRadioJobControl
                     return hasJob;
             }
             return true;
+        }
+
+        private bool IsValidJob(Job job)
+        {
+            if (job != null && job.State == JobState.Available)
+            {
+                if (SingletonBehaviour<JobsManager>.Instance.currentJobs.Count >= SingletonBehaviour<LicenseManager>.Instance.GetNumberOfAllowedConcurrentJobs()) return false;
+                if (!SingletonBehaviour<LicenseManager>.Instance.IsLicensedForJob(JobLicenseType_v2.ToV2List(job.requiredLicenses))) return false;
+                if (!SingletonBehaviour<CareerManagerDebtController>.Instance.IsPlayerAllowedToTakeJob()) return false;
+                return true;
+            }
+            return false;
         }
 
         public bool ButtonACustomAction()
